@@ -15,6 +15,12 @@ module EnhancedResources
       self.parameter_nestings.flatten!
     end
 
+    def default_attribute(*args)
+      options = args.extract_options!
+      options.symbolize_keys!
+      self.default_attributes << { :attribute => args[0], :factory => args[1], :options => options }
+    end
+
     def back_to_referrer(methods=[:destroy, :update])
       methods.each do |method|
         self.class_eval <<-END

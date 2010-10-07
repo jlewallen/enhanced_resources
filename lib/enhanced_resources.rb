@@ -6,6 +6,6 @@ end
 
 class ActionController::Base
   def self.enhanced_resources(options={})
-    EnhancedResources::Base.enhanced_resources(self, options)
+    ::EnhancedResources::Base.enhanced_resources(self, options)
   end
 end

@@ -5,8 +5,8 @@ module EnhancedResources
         inherit_resources
         respond_to :html, :xml, :json
 
-        include EnhancedResources::BaseHelpers
-        extend  EnhancedResources::ClassMethods
+        include ::EnhancedResources::BaseHelpers
+        extend  ::EnhancedResources::ClassMethods
        
         defaults_options = {}
         defaults_options[:resource_class] = options.delete(:class) if options.has_key?(:class)
@@ -22,11 +22,13 @@ module EnhancedResources
           c.class_inheritable_accessor :authenticated_user_references
           c.class_inheritable_accessor :parameter_nestings
           c.class_inheritable_accessor :references
+          c.class_inheritable_accessor :default_attributes
         end
 
         self.authenticated_user_references = []
         self.parameter_nestings = []
         self.references = []
+        self.default_attributes = []
       end
     end
   end

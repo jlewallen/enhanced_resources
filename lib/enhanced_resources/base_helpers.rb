@@ -2,7 +2,6 @@ module EnhancedResources
   module BaseHelpers
     protected
       def build_resource
-        logger.debug("  Instance Name: #{resource_instance_name} #{parameter_nestings.inspect}")
         parameter_nestings.each do |id|
           if params.has_key?(id)
             params[resource_instance_name] ||= {}
@@ -16,6 +15,13 @@ module EnhancedResources
         authenticated_user_references.each do |attribute|
           instance.send("#{attribute}=", current_user)
         end
+
+        default_attributes.each do |builder|
+          attribute = builder[:attribute]
+          value = builder[:factory].call(current_user)
+          instance.send("#{attribute}=", value)
+        end
+
         references.each do |builder|
           attribute = builder[:attribute]
           param_id = builder[:param_id]
