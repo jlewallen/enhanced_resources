@@ -11,7 +11,15 @@ module EnhancedResources
         get_resource_ivar || set_resource_ivar(fresh_resource(end_of_association_chain.send(method_for_build, params[resource_instance_name] || {})))
       end
 
+      def resource
+        method = :find
+	method = :get if end_of_association_chain.respond_to?(:get)
+        get_resource_ivar || set_resource_ivar(end_of_association_chain.send(method, params[:id]))
+      end
+
       def fresh_resource(instance)
+	return instance if instance.persisted?
+
         authenticated_user_references.each do |attribute|
           instance.send("#{attribute}=", current_user)
         end
