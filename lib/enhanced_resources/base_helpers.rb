@@ -12,13 +12,14 @@ module EnhancedResources
       end
 
       def resource
+        target = end_of_association_chain
         method = :find
-	method = :get if end_of_association_chain.respond_to?(:get)
-        get_resource_ivar || set_resource_ivar(end_of_association_chain.send(method, params[:id]))
+	      method = :get if target.respond_to?(:get)
+        get_resource_ivar || set_resource_ivar(target.send(method, params[:id]))
       end
 
       def fresh_resource(instance)
-	return instance if instance.persisted?
+        return instance if instance.persisted?
 
         authenticated_user_references.each do |attribute|
           instance.send("#{attribute}=", current_user)
