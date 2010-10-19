@@ -11,6 +11,10 @@ module EnhancedResources
         get_resource_ivar || set_resource_ivar(fresh_resource(end_of_association_chain.send(method_for_build, params[resource_instance_name] || {})))
       end
 
+      def create_resource(object)
+        object.save if object.valid?
+      end
+
       def resource
         target = end_of_association_chain
         method = :find
